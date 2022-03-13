@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Covid_19</title>
+    {% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> {% endcomment %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<html>
+<body>
+    {% comment %} <div class="fixed-header">
+        <div class>
+            <nav>
+                <a href="/"><span style="font-size: 40px;">COVID-19 DashBoard</span></a>
+                
+            </nav>
+        </div>
+    </div> {% endcomment %}
+    <h1>The quantity of infcted patients : {{totalCount}}</h1>
+    <canvas id="myChart"></canvas>
+    
+</body>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d'); 
+var myChart = new Chart(ctx, {
+    type: 'bar',
+
+    data : {
+        labels: {{countryNames|safe}},
+        datasets: [{
+            type:'bar',
+            label: 'Quantity',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: {{barPlotvals|safe}},
+      }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+  </script>
+</html>
+    
+

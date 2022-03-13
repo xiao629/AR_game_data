@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>溫度查詢-折線圖</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+<div>
+    <canvas id="myChart" width="1000" hight="500"></canvas>
+    </div>
+</body>
+
+<script>
+    const labels = ['Jan. 18','Jan. 19','Jan. 20','Jan. 21','Jan. 22','Jan. 23', ];
+  
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: '溫度趨勢圖',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: [23, 22, 16, 17, 20, 18, 25],
+      }]
+    };
+  
+    const config = {
+      type: 'line',
+      data: data,
+      options: {}
+    };
+    const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+  </script>
+</html>

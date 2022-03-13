@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>溫度查詢</title>
+    <link   rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+    <center>
+        <h1>每日溫度趨勢</h1> 
+        <h3>請選填欲查詢時間</h3>
+        <hr>
+        {% comment %} 搜尋欄 {% endcomment %}
+        <form method="POST">        
+            {% csrf_token %}
+            開始時間:<input type="date" name="fromdate"/>
+            結束時間:<input type="date" name="todate"/>
+            <input type="submit"value="搜尋"/>
+            </hr>
+            <table border="1-">
+                <tr>
+                    <th>編號</th>
+                    <th>名字</th>
+                    <th>溫度</th>
+                    <th>日期及時間</th>
+                </tr>
+                {% for result in data %}
+                <tr> 
+                    <td> {{result.ks_id}}</td>
+                    <td> {{result.ks_name}}</td>
+                    <td> {{result.ks_temperature}}</td>
+                    <td> {{result.ks_time}}</td> 
+                </tr>
+                {% endfor %}
+            </table>
+        </form>
+
+        {% comment %} 未成功連動的plotly圖 {% endcomment %}
+        <div  class="container" class="row">
+                <div class="col-md-8">
+                {% autoescape off %}
+                {{ plot_div | safe }}
+                {% endautoescape  %}
+                </div>
+            </div> 
+
+        {% comment %} 網路上找的plotly dash應用 data來自網上{% endcomment %}
+        <div>
+            <input type="button" value="折線圖" onclick="location.href='http://127.0.0.1:8000/temp_search/linechart';" class="btn btn-secondary" data-dismiss="modal" />
+            <canvas id="myChart" width="1000" hight="500"></canvas>
+            </div>
+            
+    </center>
+</body>
+
+<script>
+    const labels = ['Jan. 18','Jan. 19','Jan. 20','Jan. 21','Jan. 22','Jan. 23', ];
+    
+    const data = {
+        labels: labels,
+        datasets: [{
+        label: '溫度趨勢圖',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: [23, 22, 16, 17, 20, 18, 35],
+      }]
+    };
+  
+    const config = {
+        type: 'line',
+        data: data,
+        options: {}
+    };
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+  );
+  </script>
+</html>

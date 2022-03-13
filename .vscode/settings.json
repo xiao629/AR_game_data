@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./KS_intern/posts"
+    ]
+}

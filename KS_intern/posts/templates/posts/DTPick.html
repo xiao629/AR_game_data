@@ -1,0 +1,149 @@
+{% comment %} <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+
+<html>
+    <body>
+<div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: block; padding-right: 16px;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">選擇要抓取資料的時間範圍</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span> 
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-4">
+                    <label>開始時間</label>
+                    <div class="input-group date" id="datetimepicker12" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker12">
+                        <div class="input-group-append" data-target="#datetimepicker12" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>結束時間</label>
+                    <div class="input-group date" id="datetimepicker13" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker13">
+                        <div class="input-group-append" data-target="#datetimepicker13" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer py-5">
+                <input type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.href='http://127.0.0.1:8000';" value="取消"> 
+                <input type="submit" class="btn btn-primary" value="查詢">
+            </div>
+        </div>
+    </div>
+</div>
+<h2>測試測試測試</h2>
+</body>
+</html>
+<script>
+$('#datetimepicker12').datetimepicker({
+    defaultDate: new Date(),                   
+    format: 'YYYY-MM-DD hh:mm:ss A'             
+});
+$('#datetimepicker13').datetimepicker({
+    defaultDate: new Date(),
+    format: 'YYYY-MM-DD hh:mm:ss A'
+});
+</script> {% endcomment %}
+
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Covid_19_piechart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<html>
+<body>
+    
+    <h1>The quantity of infcted patients : {{ttc}}</h1>
+    <canvas id="myPieChart" ></canvas>
+    
+</body>
+<script>
+var ctx = document.getElementById('myPieChart').getContext('2d');  //表示圖表是2D的
+var options = {
+    tooltips: {
+  enabled: false
+},
+      plugins: {
+     datalabels: {
+         formatter: (value, ctx) => {
+           let sum = 0;
+           let dataArr = ctx.chart.data.datasets[0].data;
+           dataArr.map(data => {
+               sum += data;
+           });
+           let percentage = (value*100 / sum).toFixed(2)+"%";
+           return percentage;
+         },
+         color: '#fff',
+              }
+ }
+};
+var myPieChart = new Chart(ctx, {                               //以下給定資料
+    type: 'pie',
+    data: {
+        labels: {{cNames|safe}},                                //顏色對國家
+        datasets: [{
+            data:{{pievalu|safe}},
+            label: 'quantity',
+            
+            backgroundColor: [
+                '#0000CD',                
+                'rgba(139, 69 , 19 , 0.5)',                   //
+                'rgba(255, 255, 0  , 0.5)',                  //黃
+                'rgba(0  , 255, 0  , 0.5)',                    //綠
+                'rgba(255, 192, 203, 0.5)',         //pink
+                'rgba(54 , 162, 235, 0.5)',          //blue
+                'rgba(255, 206, 86 , 0.5)',          //Yellow
+                'rgba(255,   0, 0  , 0.5)',          //Green
+                'rgba(153, 102, 255, 0.5)',         //Purple
+                'rgba(139, 126, 102 , 0.5)',          //Orang
+                ],
+            borderColor: [
+                '#0000CD',                //紅
+                'rgba(139, 69 , 19 , 1)',                   //
+                'rgba(255, 255, 0  , 1)',                  //黃
+                'rgba(0  , 255,   0, 1)',                    //綠
+                'rgba(255, 192, 203, 1)',
+                'rgba(54 , 162, 235, 1)',          //blue
+                'rgba(255, 206,  86, 1)',          //Yellow
+                'rgba(255,   0, 0  , 1)',          //Green
+                'rgba(153, 102, 255, 1)',         //Purple
+                'rgba(139, 126, 102, 1)',
+            ],
+            
+        }]
+    },
+        options: options
+    });
+
+  </script>
+</html>
+    
+{% comment %} 
+{
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
+} {% endcomment %}
